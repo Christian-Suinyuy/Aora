@@ -1,5 +1,5 @@
-import SearchBar from "./assets/Seach-bar/Search"
-import Card from "./assets/Item card/itemCard"
+import SearchBar from "../Seach-bar/Search"
+import Card from "../Item card/itemCard"
 
 function Aside(){
     return (

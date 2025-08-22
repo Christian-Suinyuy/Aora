@@ -1,4 +1,4 @@
-import Products from "../../products"
+import Products from "../Products page/products"
 import sample from "../images/water buttle.svg"
 
 class Cart{
