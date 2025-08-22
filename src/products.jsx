@@ -3,9 +3,9 @@ import Card from "./assets/Item card/itemCard"
 
 function Aside(){
     return (
-        <div className="filter h-fit sticky top-10">
+        <div className="filter h-fit sm:sticky top-10">
                 <h1 className="font-bold text-xl">filter</h1>
-                <form className="">
+                <form className=" grid gap-5">
                     <label htmlFor="category" className="flex flex-col gap-2">
                         <p className="font-bold">Category</p>
                         <select id="category" className="w-full border-1 p-2 rounded">
@@ -23,8 +23,7 @@ function Aside(){
                         <div className="flex gap-2"> <p>min</p> <input type="number" className=" border-1 rounded p-1 w-15"/></div>
                         </div>
                     </label>
-                </form>
-
+                    
                 <label htmlFor="category" className="flex flex-col gap-2">
                         <p className="font-bold">Brand</p>
                         <select id="category" className="w-full border-1 p-2 rounded">
@@ -34,6 +33,8 @@ function Aside(){
                             <option value="Pc">Comuters</option>
                         </select>
                     </label>
+                </form>
+
         </div>
     )
 }
@@ -49,7 +50,7 @@ function Grid(){
                     <input type="text" placeholder="...Sort by" className="border-1 p-1" />
                 </label>
 
-            <div className="product-grid grid grid-cols-5">
+            <div className="product-grid grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
                 <Card />
                 <Card />
                 <Card />
@@ -75,7 +76,7 @@ function Grid(){
 function Products(){
     return (
         <section className=" flex flex-col gap-3 px-10">
-            <div className="grid grid-cols-[1fr_4fr] gap-10">
+            <div className="grid sm:grid-cols-[1fr_4fr] gap-10">
             <Aside />
             <Grid />
             <div></div>
