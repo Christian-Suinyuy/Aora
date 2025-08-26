@@ -1,5 +1,16 @@
-import SearchBar from "../Seach-bar/Search"
+// import SearchBar from "../Seach-bar/Search"
 import Card from "../Item card/itemCard"
+import {Products as producs} from "../producs"
+import SearcIcon from '../images/search-icon.svg'
+
+function SearchBar(){
+    return(
+        <div className="flex sticky z-1 top-12 search-container w-full border-0 rounded-2xl bg-blue-900/50 mx-auto h-9 px-1 gap-3 py-2">
+            <img src={SearcIcon} alt="icon" />
+            <input type="text" placeholder="search" className="w-full focus:outline-0"/>
+        </div>
+    )
+}
 
 function Aside(){
     return (
@@ -42,7 +53,11 @@ function Aside(){
 function Grid(){
     return(
         <section className="product-main">
-            <SearchBar />
+            {/* <SearchBar /> */}
+            <div className="flex sticky z-1 top-12 search-container w-full border-0 rounded-2xl bg-blue-900/50 mx-auto h-9 px-1 gap-3 py-2">
+                <img src={SearcIcon} alt="icon" />
+                <input type="text" placeholder="search" className="w-full focus:outline-0"/>
+            </div>
             <h1 className="font-bold text-xl">Featured Products</h1>
             <div className="product-list grid gap-5">
                 <label htmlFor="sort">
@@ -50,24 +65,9 @@ function Grid(){
                     <input type="text" placeholder="...Sort by" className="border-1 p-1" />
                 </label>
 
-            <div className="product-grid grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
+            <div className="product-grid gap-10 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
+                {producs.map((item,idx)=> <Card key={idx} image={`../${item.image}`} productName={item.name} price={item.priceCents} ratings={item.rating} id={item.id} />)
+                }
             </div>
             </div>
         </section>

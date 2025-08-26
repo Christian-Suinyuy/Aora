@@ -2,18 +2,70 @@ import Products from "../Products page/products"
 import sample from "../images/water buttle.svg"
 
 class Cart{
-    item = {
-        Productname: 'string',
-        image: sample,
-        price: 1000,
-        others: "size 4",
-        quantity: 1
-    }
 
     constructor(){
-        this.items =JSON.parse(localStorage.getItem("cartItems")) || [this.item]
+        this.items =JSON.parse(localStorage.getItem('cart')) || []
         this.total
     }
+
+    saveToStorage(){
+        localStorage.setItem("cart", JSON.stringify(this.items))
+    }
+
+    calculateTotal(){
+        let total = 0
+        this.items.forEach(product=>{
+            total += (product.price * product.quantity)
+        })
+
+        return (total + this.calculateTax())
+    }
+
+    calculatQuantity(){
+        let quantity = 0
+        this.items.forEach(item=>{
+           quantity += item.quantity
+        })
+        return quantity
+    }
+    
+    updateQuantity(name, quantity){
+        this.items.forEach(item=>{
+                (name=== item.id) && (item.quantity = quantity)
+            })
+            this.saveToStorage()
+    }
+
+    calculateTax(){
+        let total = 0
+        this.items.forEach(product=>{
+            total += (product.price * product.quantity)
+        })
+
+        return ((2/100) * total)
+    }
+
+    removeFromCart(id){
+        this.items = this.items.filter((product)=>product.id != id)
+        this.saveToStorage()
+        console.log(this.items)
+    }
+
+    addToCart(product){
+            let notFount = true
+            this.items.forEach(item=>{
+                (product.id=== item.id) && (item.quantity += 1,notFount = false)
+            })
+
+        if (notFount){
+            this.items.push(product)
+        }
+
+        this.saveToStorage()
+    }
+
+    
+    
 }
 
 export let cart = new Cart

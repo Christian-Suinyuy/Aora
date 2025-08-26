@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import { Routes, Route } from 'react-router-dom'
 import Header from './assets/header/Header'
 import Footer from './assets/footer/footer'
 import Home from './home'
@@ -11,20 +12,23 @@ import LogIn from './assets/User accounts/logIn'
 import History from './assets/order history/orderHistory'
 
 
+
 function App() {
   return (
-    <section className='flex w-full flex-col gap-2 justify-center overflow-hidden'>
+    <section className='flex w-full flex-col gap-2 justify-center'>
       <Header />
       <div className='mx-4'>
-        {/* <Home /> */}
-        {/* <Products /> */}
-        {/* <Cart /> */}
-        {/* {<Checkout />} */}
-        {/* <SignUp /> */}
-        {/* <LogIn /> */}
-        <History />
-      <Footer/>
+        <Routes>
+        <Route path='/' element= {<Home />} />
+        <Route path='/products' element= {<Products />} />
+        <Route path='/cart' element= {<Cart />} />
+        <Route path='/checkout' element= {<Checkout />} />
+        <Route path='/signup' element= {<SignUp />} />
+        <Route path='/login' element= {<LogIn />} />
+        <Route path='/history' element= {<History />} />
+        </Routes>
       </div>
+      <Footer/>
     </section>
   )
 }
