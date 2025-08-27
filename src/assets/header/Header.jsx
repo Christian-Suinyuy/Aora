@@ -3,8 +3,19 @@ import Like from '../images/like.svg'
 import CartImage from '../images/cart.svg'
 import { cart } from '../cart/cartData'
 import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
 function Header(){
+    const [quantity, setQuantity]= useState(cart.calculatQuantity())
+    useEffect(()=>{
+        const unsubscribe = cart.subscibe(()=>{
+            setQuantity(cart.calculatQuantity())
+        })
+
+        setQuantity(cart.calculatQuantity())
+
+        return ()=> unsubscribe()
+    }, [])
 
     return (
         <header className="bg-white h-12 items-center-safe left-side sticky z-10 top-0 border-1 flex w-full justify-between mb-2 px-2">
@@ -42,7 +53,7 @@ function Header(){
                 <Link to="/cart" className='hover:scale-110 ease-in-out'>
                 <div>
                     <span className='bg-blue-600/50 rounded-2xl w-15 h-7 absolute right-0 flex justify-center-safe top-0'>
-                        {cart.calculatQuantity()} Cart
+                        {quantity} Cart
                     </span>
                 <img src={CartImage} alt= "Cart" />
                 </div>

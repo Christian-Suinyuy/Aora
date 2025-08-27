@@ -12,9 +12,11 @@ function Card({image = sample, id= '1', productName = "Wireless HeadPhones", pri
     }
     return(
         <div className='grid gap-5 grid-cols-2 sm:flex sm:flex-col sm:w-55 hover:scale-97 ease-in-out duration-600 '>
-            <img src={image} alt="" className='h-30 mx-auto sm:h-45' />
-            <div className=''>
-                <h3 className="font-bold">{productName}</h3>
+            <div className="h-40">
+            <img src={image} alt="" className='h-full mx-auto' />
+            </div>
+            <div className='h-15'>
+                <h3 className="font-bold h-12 overflow-auto">{productName}</h3>
                 <div className="details text-gray-600">
                     <span>{price}-XAF • ★ {ratings.stars} ({ratings.count})</span>
                 </div>

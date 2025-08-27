@@ -1,10 +1,11 @@
 import {cart} from './cartData'
 import BigBlue from '../bigBlue'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 
 function CartItem({details = product}){
     let [quantity, setQuantity] = useState(details.quantity)
+
     let increaseQuantity = ()=>{
         setQuantity(q=>{ q+=1
             cart.updateQuantity(details.id, q)
@@ -18,7 +19,18 @@ function CartItem({details = product}){
             return q
         })
     }
-
+    
+    const [q, setq]= useState(cart.calculatQuantity())
+        useEffect(()=>{
+            const unsubscribe = cart.subscibe(()=>{
+                setq(cart.calculatQuantity())
+            })
+    
+            setq(cart.calculatQuantity())
+    
+            return ()=> unsubscribe()
+        }, [])
+    
 
     return(
         <div className="product-details flex justify-between">
@@ -45,6 +57,7 @@ function CartItem({details = product}){
 }
 
 function Summary(){
+
     return (
         <section className="order-summary grid gap-3">
             <div>
@@ -73,6 +86,16 @@ function Summary(){
 }
 
 function Cart(){
+    const [quantity, setQuantity]= useState(cart.calculatQuantity())
+        useEffect(()=>{
+            const unsubscribe = cart.subscibe(()=>{
+                setQuantity(cart.calculatQuantity())
+            })
+    
+            setQuantity(cart.calculatQuantity())
+    
+            return ()=> unsubscribe()
+        }, [])
     return (
         <section className="cart-area grid gap-10 mx-2 text-blue-900 mb-10 sm:mx-40">
             <h2 className='font-bold text-2xl'>Sopping Cart</h2>

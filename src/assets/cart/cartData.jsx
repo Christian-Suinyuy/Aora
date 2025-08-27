@@ -6,10 +6,21 @@ class Cart{
     constructor(){
         this.items =JSON.parse(localStorage.getItem('cart')) || []
         this.total
+        this.subscibers = new Set();
+    }
+
+    notify(){
+        for( const fn of this.subscibers) fn()
+    }
+
+    subscibe(fn){
+        this.subscibers.add(fn);
+        return()=>this.subscibers.delete(fn)
     }
 
     saveToStorage(){
         localStorage.setItem("cart", JSON.stringify(this.items))
+        this.notify();
     }
 
     calculateTotal(){
