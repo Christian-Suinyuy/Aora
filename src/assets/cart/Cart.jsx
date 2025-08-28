@@ -1,6 +1,7 @@
-import {cart} from './cartData'
+import {cart as cartme} from './cartData'
 import BigBlue from '../bigBlue'
 import { useState, useEffect } from 'react'
+import { sdk } from '../../lib/config'
 
 
 function CartItem({details = product}){
@@ -8,29 +9,44 @@ function CartItem({details = product}){
 
     let increaseQuantity = ()=>{
         setQuantity(q=>{ q+=1
-            cart.updateQuantity(details.id, q)
+            cartme.updateQuantity(details.id, q)
             return q
         })
     }
 
     let decreament = ()=>{
         setQuantity(q=>{q !=1 ? q-=1 : q
-            cart.updateQuantity(details.id, q)
+            cartme.updateQuantity(details.id, q)
             return q
         })
     }
     
-    const [q, setq]= useState(cart.calculatQuantity())
+    const [q, setq]= useState(cartme.calculatQuantity())
         useEffect(()=>{
-            const unsubscribe = cart.subscibe(()=>{
-                setq(cart.calculatQuantity())
+            const unsubscribe = cartme.subscibe(()=>{
+                setq(cartme.calculatQuantity())
             })
     
-            setq(cart.calculatQuantity())
+            setq(cartme.calculatQuantity())
     
             return ()=> unsubscribe()
         }, [])
+
+        /*create cart */
+
+        // sdk.store.cart.create({
+        //     region_id: "reg_01K3R2YFBHV9H3JWK99NWWXE0V",
+        //     })
+        //     .then(({ cart }) => {
+        //         // console.log(cart)
+        //     localStorage.setItem("cart_id", cart.id)
+        // })
     
+        sdk.store.cart.retrieve('cart_01K3RFM0A8CT6BPAQN5ZJ8T3Y3')
+            .then(({ cart }) => {
+            // use cart...
+            console.log(cart,'wtf')
+        })
 
     return(
         <div className="product-details flex justify-between">
@@ -50,7 +66,7 @@ function CartItem({details = product}){
                     <span onClick={increaseQuantity} className='bg-blue-600/50 w-9 rounded-2xl text-center h-6 hover:cursor-pointer'>+</span>
                 </div>
 
-                <button className='text-red-500' onClick={()=> cart.removeFromCart(details.id)}>Remove</button>
+                <button className='text-red-500' onClick={()=> cartme.removeFromCart(details.id)}>Remove</button>
             </div>
         </div>
     )
@@ -63,43 +79,43 @@ function Summary(){
             <div>
                 <div className='flex justify-between mb-1'>
                     <p>Subtotal</p>
-                    <p>{cart.calculateTotal()}-XAF</p>
+                    <p>{cartme.calculateTotal()}-XAF</p>
                 </div>
                 
 
             <div className='flex justify-between'>
                 <p>Estimat Tax</p>
-                <p>{cart.calculateTax()}-XAF</p>
+                <p>{cartme.calculateTax()}-XAF</p>
             </div>
 
             </div>
 
                 <div className='flex justify-between mb-1'>
                     <p>Total</p>
-                    <p>{cart.calculateTotal()+500}-XAF</p>
+                    <p>{cartme.calculateTotal()+500}-XAF</p>
                 </div>
             <div className='ml-auto m-0 p-0'>
-            <BigBlue content='Proceed to Checkout' rout={cart.items[0] ? '/checkout' : '/cart'} />
+            <BigBlue content='Proceed to Checkout' rout={cartme.items[0] ? '/checkout' : '/cart'} />
             </div>
         </section>
     )
 }
 
 function Cart(){
-    const [quantity, setQuantity]= useState(cart.calculatQuantity())
+    const [quantity, setQuantity]= useState(cartme.calculatQuantity())
         useEffect(()=>{
-            const unsubscribe = cart.subscibe(()=>{
-                setQuantity(cart.calculatQuantity())
+            const unsubscribe = cartme.subscibe(()=>{
+                setQuantity(cartme.calculatQuantity())
             })
     
-            setQuantity(cart.calculatQuantity())
+            setQuantity(cartme.calculatQuantity())
     
             return ()=> unsubscribe()
         }, [])
     return (
         <section className="cart-area grid gap-10 mx-2 text-blue-900 mb-10 sm:mx-40">
             <h2 className='font-bold text-2xl'>Sopping Cart</h2>
-            {cart.items[0]? cart.items.map((product,idx)=> <CartItem key={idx} details={product}/>) : <p className=' text-2xl text-black mx-auto'>You Have no items in your Cart</p>}
+            {cartme.items[0]? cartme.items.map((product,idx)=> <CartItem key={idx} details={product}/>) : <p className=' text-2xl text-black mx-auto'>You Have no items in your Cart</p>}
             <h2 className='font-bold text-2xl'>Order Summary</h2>
             <Summary />
         </section>

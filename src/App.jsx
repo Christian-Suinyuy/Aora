@@ -15,9 +15,6 @@ import { sdk } from './lib/config'
 
 
 function App() {
-  sdk.store.product.list().then(({ products, count, offset, limit }) => {
-    console.log(products)
-  })
   
   return (
     <section className='flex w-full flex-col gap-2 justify-center'>

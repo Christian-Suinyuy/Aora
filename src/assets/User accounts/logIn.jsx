@@ -1,21 +1,40 @@
 import { Link } from "react-router-dom"
 import BigBlue from "../bigBlue"
 import { useState } from "react"
+import { sdk } from "../../lib/config"
 function LogIn(){
 
+
+// If result is a string, user is authenticated; subsequent SDK calls are authed
     let [email, setMail] = useState("")
         let changingMail = (e)=>{
             setMail(m => m = e.target.value)
         }
 
-    let [pass, setpass] = useState("")
+    let [password, setpass] = useState("")
         let changingPass = (e)=>{
             setpass(p => p = e.target.value)
         }
 
     let login = {
         email,
-        pass
+        pass: password
+    }
+
+        let sendInfo = async (customer, emailpass)=>{
+        const result = await sdk.auth.login("customer", "emailpass", {
+            email: 'b52329871@gmail.com', 
+            password:'pass'
+         })
+         console.log(typeof(result))
+    if (typeof result === "string") {
+    // authenticated; e.g., fetch profile
+    const { customer } = await sdk.store.customer.retrieve()
+    console.log(customer)
+    } else {
+    // requires redirect (third-party providers)
+    // window.location.href = result.location
+    }
     }
 
     return (
@@ -32,10 +51,10 @@ function LogIn(){
 
                 <label htmlFor="name">
                     <p>Password</p>
-                    <input type="password" value={pass} onChange={(e)=>changingPass(e)} required placeholder=" password" className="focus:outline-0 border-1 p-2 rounded border-blue-800 w-full" />
+                    <input type="password" value={password} onChange={(e)=>changingPass(e)} required placeholder=" password" className="focus:outline-0 border-1 p-2 rounded border-blue-800 w-full" />
                 </label>
 
-                <BigBlue content="Sign Up"/>
+                <BigBlue content="Sign Up" onclick={sendInfo}/>
 
             </form>
             <p className="mx-auto">Dont`t` have an account? <Link to='/signup' className="text-blue-600">signUp</Link> </p>

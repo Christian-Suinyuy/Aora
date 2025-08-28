@@ -2,6 +2,8 @@
 import Card from "../Item card/itemCard"
 import {Products as producs} from "../producs"
 import SearcIcon from '../images/search-icon.svg'
+import { useEffect, useState } from "react"
+import { sdk } from "../../lib/config"
 
 function SearchBar(){
     return(
@@ -51,6 +53,13 @@ function Aside(){
 }
 
 function Grid(){
+    let [arivals, setArival] = useState([])
+      useEffect(()=>{
+        sdk.store.product.list().then(({ products, count, offset, limit }) => {
+          setArival(products)
+        })
+      },[]) 
+
     return(
         <section className="product-main">
             {/* <SearchBar /> */}
@@ -66,7 +75,7 @@ function Grid(){
                 </label>
 
             <div className="product-grid gap-10 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
-                {producs.map((item,idx)=> <Card key={idx} image={`../${item.image}`} productName={item.name} price={item.priceCents} ratings={item.rating} id={item.id} />)
+                {arivals[0]&& arivals.map((item,idx)=> <Card key={idx} Details={item} image={`../${item.image}`} productName={item.name} price={item.priceCents} ratings={item.rating} id={item.id} />)
                 }
             </div>
             </div>
