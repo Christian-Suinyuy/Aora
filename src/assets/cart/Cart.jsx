@@ -32,22 +32,6 @@ function CartItem({details = product}){
             return ()=> unsubscribe()
         }, [])
 
-        /*create cart */
-
-        // sdk.store.cart.create({
-        //     region_id: "reg_01K3R2YFBHV9H3JWK99NWWXE0V",
-        //     })
-        //     .then(({ cart }) => {
-        //         // console.log(cart)
-        //     localStorage.setItem("cart_id", cart.id)
-        // })
-    
-        sdk.store.cart.retrieve('cart_01K3RFM0A8CT6BPAQN5ZJ8T3Y3')
-            .then(({ cart }) => {
-            // use cart...
-            console.log(cart,'wtf')
-        })
-
     return(
         <div className="product-details flex justify-between">
             <div className="product flex gap-2">

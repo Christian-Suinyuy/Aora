@@ -1,10 +1,9 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import BigBlue from "../bigBlue"
 import { useState } from "react"
 import { sdk } from "../../lib/config"
 function LogIn(){
-
-
+    const navigate = useNavigate();
 // If result is a string, user is authenticated; subsequent SDK calls are authed
     let [email, setMail] = useState("")
         let changingMail = (e)=>{
@@ -23,15 +22,17 @@ function LogIn(){
 
         let sendInfo = async (customer, emailpass)=>{
         const result = await sdk.auth.login("customer", "emailpass", {
-            email: 'b52329871@gmail.com', 
-            password:'pass'
+            email, 
+            password,
          })
          console.log(typeof(result))
     if (typeof result === "string") {
     // authenticated; e.g., fetch profile
     const { customer } = await sdk.store.customer.retrieve()
+    navigate('/')
     console.log(customer)
     } else {
+
     // requires redirect (third-party providers)
     // window.location.href = result.location
     }

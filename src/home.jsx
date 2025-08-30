@@ -11,8 +11,10 @@ function Home(){
   useEffect(()=>{
     sdk.store.product.list().then(({ products, count, offset, limit }) => {
       setArival(products)
+      // console.log(products)
     })
   },[])    
+
 
     return (
       <section className="body2 sm:mx-50">

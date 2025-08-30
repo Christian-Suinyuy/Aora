@@ -4,7 +4,7 @@ import { cart } from '../cart/cartData'
 import BigBlue from '../bigBlue'
 import { sdk } from '../../lib/config'
 import { useState } from 'react'
-function Card({image = sample, Details = [], id= '1', productName = "Wireless HeadPhones", ratings = {stars:4.3,count: 90 }}){
+function Card({image = sample, Details = [], id= '1', ratings = {stars:4.3,count: 90 }}){
     
     let [price,setPrice] = useState(0)
     sdk.store.product.retrieve(Details.id, {
@@ -19,13 +19,17 @@ function Card({image = sample, Details = [], id= '1', productName = "Wireless He
             // Use calculated_price.original_amount for the original price (if on sale)
     })
 
+    // console.log(Details)
+
     let product = {
-        productName,
+        productName:Details.title,
         image : Details.images[0].url,
         price,
         quantity: 1,
         id
     }
+
+    // console.log(product)
 
     // sdk.store.region.retrieve("reg_01K3R2YFBHV9H3JWK99NWWXE0V").then(({ region }) => {
     // // region.countries is an array of country objects, each with iso_2 property

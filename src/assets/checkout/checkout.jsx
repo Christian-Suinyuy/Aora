@@ -3,6 +3,7 @@ import sample1 from "../images/water buttle.svg"
 import sample2 from "../images/sheets.svg"
 import { cart } from "../cart/cartData"
 import { useRef, useState } from "react"
+import { sdk } from "../../lib/config"
 
 function Form(){
     let [name, setName] = useState("")
@@ -56,7 +57,83 @@ function Form(){
         let stuff = new FormData(formElem.current)
         // formElem.current.requestSubmit()
     }
+    let cartId = localStorage.getItem('cart_id')
+    // console.log(cartId)
 
+
+     /*create cart */
+
+       cartId ? '' : sdk.store.cart.create({
+            region_id: "reg_01K3R2YFBHV9H3JWK99NWWXE0V",
+            })
+            .then(({ cart }) => {
+            localStorage.setItem("cart_id", cart.id)
+        })
+
+        // /*retrive cart */
+
+        // sdk.store.cart.retrieve(cartId)
+        //     .then(({ cart }) => {
+        //     // use cart...
+        //     //   console.log(cart)
+        // })
+        
+        const addToCart = (variant_id,quantity = 1)=>{
+            // const cartId = localStorage.getItem("cart_id")
+            if(!cartId){
+                console.log("could not add to cart")
+                return
+            }
+            
+            sdk.store.cart.createLineItem(cartId, {
+                variant_id,
+                quantity,
+            }).then(({cart})=>{
+                console.log(cart, "product added to cart")
+                
+                // /*adding shipping method */
+                // sdk.store.cart.addShippingMethod(cart.id, {
+                //         option_id : 'so_01K3X202RPRWXF3BCZJCERRAZJ',
+                //         data: {
+                //         }
+                //     }).then({cart: updatedCart})
+                //     sdk.store.cart.addShippingMethod(cart.id, )
+                //     console.log(cart)
+            })
+            
+        }
+
+        addToCart("variant_01K3NN5WASX6XH64Z7H4PN751V")
+
+        /*getiing shipping options */
+        // sdk.store.fulfillment.listCartOptions({cart_id:'cart_01K3VHDWQSKD064WJ64XXCQEK5'})
+        //     .then(({shipping_options})=>{
+        //         console.log(shipping_options)
+        //     })
+
+
+            /*place an order */
+        const PlaceOrder = async()=>{
+            sdk.store.cart.retrieve(cartId)
+                .then(({ cart }) => {
+                // use cart...
+                
+                /*initialise payment */
+                sdk.store.payment.initiatePaymentSession(cart,{
+                    provider_id: "pp_system_default"
+                })
+                // console.log(cart)
+                sdk.store.cart.complete(cart.id).then((data)=>{
+                    if (data.type === 'cart'){
+                        console.error(data.error)
+                    }
+                    else if (data.type ==='order' && data.order){
+                        localStorage.removeItem('cart_id')
+                    }
+                })
+                })
+                /*place order*/
+        } 
 
     return(
         <>
@@ -109,7 +186,7 @@ function Form(){
             
         </form>
         <Summary />
-        <BigBlue onclick={sendData} type="submit" content="Place Order" rout="/checkout"/>
+        <BigBlue onclick={PlaceOrder} type="submit" content="Place Order" rout="/checkout"/>
         </>
     )
 }
