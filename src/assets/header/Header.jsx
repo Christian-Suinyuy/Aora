@@ -3,10 +3,14 @@ import Like from '../images/like.svg'
 import CartImage from '../images/cart.svg'
 import { cart } from '../cart/cartData'
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { AppContext } from '../../AppContext'
 
 function Header(){
-    const [quantity, setQuantity]= useState(cart.calculatQuantity())
+
+    const [quantity, updateQuantity ]= useContext(AppContext)
+
+    const [quantityOld, setQuantity]= useState(cart.calculatQuantity())
     useEffect(()=>{
         const unsubscribe = cart.subscibe(()=>{
             setQuantity(cart.calculatQuantity())

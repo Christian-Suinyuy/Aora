@@ -56,6 +56,7 @@ function Grid(){
     let [arivals, setArival] = useState([])
       useEffect(()=>{
         sdk.store.product.list().then(({ products, count, offset, limit }) => {
+            // console.log(products[0])
           setArival(products)
         })
       },[]) 
@@ -83,6 +84,23 @@ function Grid(){
     )
 }
 function Products(){
+
+            // /*retrive cart */
+        const cartId = localStorage.getItem('cart_id')
+        
+        cartId ? sdk.store.cart.retrieve(cartId)
+            .then(({ cart }) => {
+            // use cart...
+            //   console.log(cart)
+            //   console.log(cart.)
+        }) : sdk.store.cart.create({
+            region_id: "reg_01K3R2YFBHV9H3JWK99NWWXE0V",
+            })
+            .then(({ cart }) => {
+            localStorage.setItem("cart_id", cart.id)
+                // console.log(cart)
+        })
+
     return (
         <section className=" flex flex-col gap-3 px-10">
             <div className="grid sm:grid-cols-[1fr_4fr] gap-10">

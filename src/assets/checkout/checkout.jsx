@@ -1,6 +1,4 @@
 import BigBlue from "../bigBlue"
-import sample1 from "../images/water buttle.svg"
-import sample2 from "../images/sheets.svg"
 import { cart } from "../cart/cartData"
 import { useRef, useState } from "react"
 import { sdk } from "../../lib/config"
@@ -52,11 +50,11 @@ function Form(){
         phone
     }
      
-    let bought = [ cart.items, cart.calculateTotal(), info]
-    let sendData = ()=>{
-        let stuff = new FormData(formElem.current)
-        // formElem.current.requestSubmit()
-    }
+    // let bought = [ cart.items, cart.calculateTotal(), info]
+    // let sendData = ()=>{
+    //     let stuff = new FormData(formElem.current)
+    //     // formElem.current.requestSubmit()
+    // }
     let cartId = localStorage.getItem('cart_id')
     // console.log(cartId)
 
@@ -75,7 +73,7 @@ function Form(){
         // sdk.store.cart.retrieve(cartId)
         //     .then(({ cart }) => {
         //     // use cart...
-        //     //   console.log(cart)
+        //       console.log(cart.quantity)
         // })
         
         const addToCart = (variant_id,quantity = 1)=>{
@@ -99,11 +97,10 @@ function Form(){
                 //     }).then({cart: updatedCart})
                 //     sdk.store.cart.addShippingMethod(cart.id, )
                 //     console.log(cart)
-            })
-            
+            }) 
         }
+        
 
-        addToCart("variant_01K3NN5WASX6XH64Z7H4PN751V")
 
         /*getiing shipping options */
         // sdk.store.fulfillment.listCartOptions({cart_id:'cart_01K3VHDWQSKD064WJ64XXCQEK5'})

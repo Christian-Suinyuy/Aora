@@ -11,13 +11,12 @@ import SignUp from './assets/User accounts/signup'
 import LogIn from './assets/User accounts/logIn'
 import History from './assets/order history/orderHistory'
 import { sdk } from './lib/config'
-
+import Variants from './assets/variantsPage/ViewVariants'
 
 
 function App() {
-  
   return (
-    <section className='flex w-full flex-col gap-2 justify-center'>
+    <section className='grid h-dvh flex-col gap-2'>
       <Header />
       <div className='mx-4'>
         <Routes>
@@ -28,6 +27,7 @@ function App() {
         <Route path='/signup' element= {<SignUp />} />
         <Route path='/login' element= {<LogIn />} />
         <Route path='/history' element= {<History />} />
+        <Route path='/item' element = {<Variants/>} />
         </Routes>
       </div>
       <Footer/>

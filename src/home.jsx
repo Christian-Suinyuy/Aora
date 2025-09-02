@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import Section from './assets/homeSection/Section'
 import SearchBar from './assets/Seach-bar/Search'
 import { sdk } from './lib/config'
-import { useFetcher } from 'react-router-dom'
+import { useFetcher } from 'react-router-dom' 
 
 function Home(){
 
