@@ -12,7 +12,7 @@ function Variants(){
     let [selected, setSelected] = useState(variantItem.variants[0].id)
     let [itemQuantity, setQuantity] = useState(1)
     const cartId = localStorage.getItem('cart_id')
-
+    console.log(cartId)
     useEffect(()=>{
         sdk.store.product.retrieve(variantItem.id, {
         fields: `*variants.calculated_price`,

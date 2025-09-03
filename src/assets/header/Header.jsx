@@ -38,9 +38,9 @@ function Header(){
                     <Link to='/cart' className='hover:scale-110 ease-in-out'>
                         <li className=''>Carts</li>
                     </Link>
-                    <Link to='/history' className='hover:scale-110 ease-in-out'>
+                    {/* <Link to='/history' className='hover:scale-110 ease-in-out'>
                         <li className=''>History</li>
-                    </Link>
+                    </Link> */}
                     
                 </ul>
                 </div>
@@ -50,6 +50,7 @@ function Header(){
                 <Link to='/signup' className='hover:scale-110 ease-in-out'>
                         <span className=''>signUp</span>
                 </Link>
+
                 <Link to='/login' className='hover:scale-110 ease-in-out'>
                         <span className=''>Login</span>
                 </Link >

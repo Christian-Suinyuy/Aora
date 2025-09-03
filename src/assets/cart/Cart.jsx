@@ -28,7 +28,7 @@ function CartItem({details = product}){
         sdk.store.cart.deleteLineItem(cartId,var_id)
             .then(({parent: cart})=>{
                 updateQuantity()
-                console.log(cart)
+        
             })
     }
 
@@ -42,7 +42,6 @@ function CartItem({details = product}){
                     <p className='text-sm'>{details.unit_price}-XAF</p>
                     <p>{details.name}</p>
                 </div>
-                <span>{itemQuantity}</span>
             </div>
 
             <div className='grid items-center-safe' >
@@ -85,6 +84,21 @@ function CartItem({details = product}){
 }
 
 function Summary({details}){
+    let [nav, setnav] = useState('')
+    // console.log(details)
+    useEffect(()=>{
+        sdk.store.customer.retrieve()
+            .then(({ customer }) => {
+            // logged in
+            // console.log(customer)
+            setnav(n=>n = '/checkout')
+            })
+                .catch(() => {
+                    alert('Opps! weencoutered an error try logging in')
+                    setnav(n=> n= '/login')
+                })
+            },[])
+
     return (
         <section className="order-summary grid gap-3">
             <div>
@@ -106,7 +120,7 @@ function Summary({details}){
                     <p>{details ? details.item_total : 0}-XAF</p>
                 </div>
             <div className='ml-auto m-0 p-0'>
-            <BigBlue content='Proceed to Checkout' rout={details ? '/checkout' : '/cart'} />
+            <BigBlue content='Proceed to Checkout' rout={nav} />
             </div>
         </section>
     )
@@ -127,8 +141,7 @@ function Cart(){
         sdk.store.cart.retrieve(cartId)
             .then(({ cart }) => {
             // use cart...
-            console.log(cart.calculatQuantity)
-                setActualCart(cart)
+               setActualCart(c => c = cart)
         })
     
             return ()=> unsubscribe()
@@ -137,10 +150,10 @@ function Cart(){
         }, [])
     return (
         <section className="cart-area grid gap-10 mx-2 text-blue-900 mb-10 sm:mx-40">
-            <h2 className='font-bold text-2xl'>Sopping Cart</h2>
+            <h2 className='font-bold text-2xl'>Shopping Cart</h2>
             {actualCart? actualCart.items.map((product,idx)=> <CartItem key={idx} details={product}/>) : <p className=' text-2xl text-black mx-auto'>You Have no items in your Cart</p>}
             <h2 className='font-bold text-2xl'>Order Summary</h2>
-            <Summary details={actualCart || null} />
+            <Summary details={actualCart} />
         </section>
     )
 }

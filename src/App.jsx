@@ -13,6 +13,7 @@ import History from './assets/order history/orderHistory'
 import { sdk } from './lib/config'
 import Variants from './assets/variantsPage/ViewVariants'
 
+export let user = sessionStorage.getItem('userx')
 
 function App() {
   return (

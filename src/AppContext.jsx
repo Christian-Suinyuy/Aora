@@ -1,8 +1,14 @@
-import { createContext, useState } from "react";
+import {createContext, useState } from "react";
 
 import { sdk } from "./lib/config";
 
 export const AppContext = createContext();
+
+// //inside a component
+// const { customer } = useCustomer()
+// if (!customer) {
+//   // redirect to login
+// }
 
 const ContextProvider = (props)=>{
     const cartId = localStorage.getItem('cart_id')

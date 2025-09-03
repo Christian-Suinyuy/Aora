@@ -1,35 +1,12 @@
 import BigBlue from "../bigBlue"
-import { cart } from "../cart/cartData"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { sdk } from "../../lib/config"
+import { Navigate, useNavigate } from "react-router-dom"
 
 function Form(){
-    let [name, setName] = useState("")
-    let changingName = (e)=>{
-        setName(n => n = e.target.value)
-    }
+    let navigate = useNavigate()
+    let [payment, setPayment] = useState("MTN")
 
-    let [address, setAddress] = useState("")
-    let changingAddress = (e)=>{
-        setAddress(a => a = e.target.value)
-    }
-
-    let [city, setCity] = useState("")
-    let changingCity = (e)=>{
-        setCity(c => c = e.target.value)
-    }
-
-    let [region, setRegion] = useState("")
-    let changingRegion = (e)=>{
-        setRegion(r => r = e.target.value)
-    }
-
-    let [email, setMail] = useState("")
-    let changingMail = (e)=>{
-        setMail(m => m = e.target.value)
-    }
-
-    let [payment, setPayment] = useState("")
     let changingPayment = (e)=>{
         setPayment(p => p = e.target.value)
     }
@@ -40,65 +17,21 @@ function Form(){
     }
     const formElem = useRef(null)
 
-    let info = {
-        name,
-        email,
-        city,
-        region,
-        email,
-        payment,
-        phone
-    }
      
-    // let bought = [ cart.items, cart.calculateTotal(), info]
-    // let sendData = ()=>{
-    //     let stuff = new FormData(formElem.current)
-    //     // formElem.current.requestSubmit()
-    // }
+    // Navigate('/products')
+
     let cartId = localStorage.getItem('cart_id')
     // console.log(cartId)
 
 
-     /*create cart */
-
-       cartId ? '' : sdk.store.cart.create({
-            region_id: "reg_01K3R2YFBHV9H3JWK99NWWXE0V",
-            })
-            .then(({ cart }) => {
-            localStorage.setItem("cart_id", cart.id)
-        })
-
-        // /*retrive cart */
-
-        // sdk.store.cart.retrieve(cartId)
-        //     .then(({ cart }) => {
-        //     // use cart...
-        //       console.log(cart.quantity)
-        // })
-        
-        const addToCart = (variant_id,quantity = 1)=>{
-            // const cartId = localStorage.getItem("cart_id")
-            if(!cartId){
-                console.log("could not add to cart")
-                return
+        // /*adding shipping method */
+        sdk.store.cart.addShippingMethod(cartId, {
+            option_id: "so_01K3X202RPRWXF3BCZJCERRAZJ", // The ID of the selected shipping option
+            data: {
+                // Any custom data required by the fulfillment provider
             }
-            
-            sdk.store.cart.createLineItem(cartId, {
-                variant_id,
-                quantity,
-            }).then(({cart})=>{
-                console.log(cart, "product added to cart")
-                
-                // /*adding shipping method */
-                // sdk.store.cart.addShippingMethod(cart.id, {
-                //         option_id : 'so_01K3X202RPRWXF3BCZJCERRAZJ',
-                //         data: {
-                //         }
-                //     }).then({cart: updatedCart})
-                //     sdk.store.cart.addShippingMethod(cart.id, )
-                //     console.log(cart)
-            }) 
-        }
+            }).then(({ cart }) => {
+        })
         
 
 
@@ -126,6 +59,8 @@ function Form(){
                     }
                     else if (data.type ==='order' && data.order){
                         localStorage.removeItem('cart_id')
+                        alert('order Placed')
+                        navigate('/products')
                     }
                 })
                 })
@@ -135,32 +70,6 @@ function Form(){
     return(
         <>
         <form action="#" ref={formElem} className=" grid gap-2.5 h-auto w-100">
-            <h2 className="shipping-info font-bold text-black">Delivery information</h2>
-            <label htmlFor="name" className="grid gap-1.5">
-                <p>Full Name: {name}</p>
-                <input type="text" required value={name} onChange={(e)=>changingName(e)} placeholder="...eg Sonia carter" className="focus:outline-0 grid gap-10 border-1 border-blue-400 p-2 rounded w-full" />
-            </label>
-
-            <label htmlFor="name" className="grid gap-1.5">
-                <p>Address:{address}</p>
-                <input type="text" required onChange={(e)=>changingAddress(e)} placeholder="...eg Ghana street" className="focus:outline-0 grid gap-10 border-1 border-blue-400 p-2 rounded w-full" />
-            </label>
-
-            <div className="flex gap-5 justify-between">
-            <label htmlFor="name" className="grid ">
-                <p>City: {city}</p>
-                <input type="text" onChange={(e)=>changingCity(e)} placeholder="...eg Ghana street" className="focus:outline-0 grid gap-10 border-1 border-blue-400 p-2 rounded w-45" />
-            </label>
-            <label htmlFor="name" className="grid gap-1.5">
-                <p>Region: {region}</p>
-                <input type="text" onChange={(e)=>changingRegion(e)} placeholder="...eg Ghana street" className="focus:outline-0 grid gap-10 border-1 border-blue-400 p-2 rounded w-45" />
-            </label>
-            </div>
-
-            <label htmlFor="name" className="grid gap-1.5">
-                <p>Email: {email}</p>
-                <input type="text" required onChange={(e)=>changingMail(e)} placeholder="...eg Example@gmail.com" className="focus:outline-0 grid gap-10 border-1 border-blue-400 p-2 rounded w-full" />
-            </label>
 
             <h2 className="shipping-info font-bold text-black">Payment Method: {payment}</h2>
 
@@ -189,17 +98,27 @@ function Form(){
 }
 
 function Summary(){
+    const cartId = localStorage.getItem('cart_id')
+    let [useCart, setCart] = useState({})
+    useEffect(()=>{
+        sdk.store.cart.retrieve(cartId)
+                .then(({ cart }) => {
+                setCart(u => u = cart)
+            })
+    }, [])
+
     return(
         <section className="grid gap-2">
             <h2 className="shipping-info grid font-bold text-black">Delivery information</h2>
 
-            {cart.items.map((product, index)=>{
+            {useCart.items && useCart.items.map((product, index)=>{
                 return(
                     <div key={index} className="sumary flex gap-4 text-blue-900 items-center-safe">
-                        <img src={product.image} alt="" className="w-15 rounded"/>
+                        <img src={product.thumbnail} alt="" className="w-15 rounded"/>
                         <div className="details">
-                            <p className="text-black">{product.productName}</p>
+                            <p className="text-black">{product.title}</p>
                             <p className="text-sm">Quantity: {product.quantity}</p>
+                            <p className="text-sm">Unit Price: {product.unit_price} - XAF</p>
                         </div>
                     </div>
                 )
@@ -209,26 +128,26 @@ function Summary(){
                 <hr className="text-blue-800" />
                 <div className=" flex justify-between mb-5">
                     <div className="grid">
-                        <p>Shopping</p>
-                        <p className="text-black">{cart.calculateTotal()}-XAF</p>
+                        <p>Shipping</p>
+                        <p className="text-black">{useCart.original_shipping_subtotal}-XAF</p>
                     </div>
 
                     <div className="grid">
                         <p>Tax</p>
-                        <p className="text-black">{cart.calculateTax()}-XAF</p>
+                        <p className="text-black">{useCart.original_tax_total}-XAF</p>
                     </div>
                 </div>
                 
                 <hr className="text-blue-800" />
                 <div className=" flex justify-between mb-5">
                     <div className="grid">
-                        <p>Delivery fee</p>
-                        <p className="text-black">500-XAF</p>
+                        <p>Products</p>
+                        <p className="text-black">{useCart.original_item_subtotal}-XAF</p>
                     </div>
 
                     <div className="grid">
                         <p>Total</p>
-                        <p className="text-black">{cart.calculateTotal()+500}-XAF</p>
+                        <p className="text-black">{useCart.original_total}-XAF</p>
                     </div>
                 </div>
             </div>

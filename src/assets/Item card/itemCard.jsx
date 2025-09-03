@@ -6,8 +6,10 @@ import { useContext, useState } from 'react'
 import { AppContext } from '../../AppContext'
 
 function Card({ Details = [], ratings = {stars:4.3,count: 90 }}){
+    let cartId = localStorage.getItem('cart_id')
     const [quantity, updateQuantity ]= useContext(AppContext)
     let [price,setPrice] = useState(0)
+     let [itemQuantity, setQuantity] = useState(1)
 
     /*retrieving product and variant prices */
     sdk.store.product.retrieve(Details.id, {
@@ -22,21 +24,27 @@ function Card({ Details = [], ratings = {stars:4.3,count: 90 }}){
             // Use calculated_price.original_amount for the original price (if on sale)
     })
 
-    // console.log(Details)
-    // console.log(Details)
-    let product = {
-        productName:Details.title,
-        image : Details.images[0].url,
-        price,
-        quantity: 1,
+    console.log(cartId)
+
+        const addToCart = (variant_id, quantity = 1)=>{
+        updateQuantity()
+        if(!cartId){
+            alert("could not add to cart")
+            return
+        }
+        
+        sdk.store.cart.createLineItem(cartId, {
+            variant_id,
+            quantity,
+        })
     }
+
 
     // sdk.store.region.retrieve("reg_01K3R2YFBHV9H3JWK99NWWXE0V").then(({ region }) => {
     // // region.countries is an array of country objects, each with iso_2 property
     // console.log(region.countries.map(country => country.iso_2))
     // })
 
-    const cartId = localStorage.getItem("cart_id")
     return(
         <div className='grid gap-5 grid-cols-2 sm:flex sm:flex-col sm:w-55 hover:scale-97 ease-in-out duration-600 '>
             <Link to={'/item'} onClick={()=>localStorage.setItem('variantsPage', JSON.stringify(Details))}>
@@ -51,7 +59,7 @@ function Card({ Details = [], ratings = {stars:4.3,count: 90 }}){
             </div>
             </Link>
             <div className='col-start-2'>
-                <BigBlue content='Add To Cart' onclick={()=> addToCart(Details.variants[0].id)}/>
+                <BigBlue content='Add To Cart' onclick={()=> addToCart(Details.variants[0].id, Number(itemQuantity))}/>
             </div>
         </div>
     )
