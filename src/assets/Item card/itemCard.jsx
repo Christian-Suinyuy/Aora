@@ -24,7 +24,6 @@ function Card({ Details = [], ratings = {stars:4.3,count: 90 }}){
             // Use calculated_price.original_amount for the original price (if on sale)
     })
 
-    console.log(cartId)
 
         const addToCart = (variant_id, quantity = 1)=>{
         updateQuantity()

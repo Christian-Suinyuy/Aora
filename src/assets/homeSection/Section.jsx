@@ -9,7 +9,7 @@ function Section({Title= "Products", produtcs = []}){
         <section className="flex flex-col gap-3 my-8">
             <h2 className="font-bold">{Title}</h2>
             <div className="cart-container grid   gap-5 mx-2 grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
-                {produtcs[0] && produtcs[0] && produtcs.map((product, idx)=>
+                {produtcs[0] && produtcs.map((product, idx)=>
                     <Card key={idx} Details={product} />
                 )}
             </div>
