@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { cart } from '../cart/cartData'
 import BigBlue from '../bigBlue'
 import { sdk } from '../../lib/config'
-import { useContext, useState } from 'react'
+import { useContext, useRef, useState } from 'react'
 import { AppContext } from '../../AppContext'
 
 function Card({ Details = [], ratings = {stars:4.3,count: 90 }}){
@@ -24,7 +24,6 @@ function Card({ Details = [], ratings = {stars:4.3,count: 90 }}){
             // Use calculated_price.original_amount for the original price (if on sale)
     })
 
-
         const addToCart = (variant_id, quantity = 1)=>{
         updateQuantity()
         if(!cartId){
@@ -44,21 +43,33 @@ function Card({ Details = [], ratings = {stars:4.3,count: 90 }}){
     // console.log(region.countries.map(country => country.iso_2))
     // })
 
+    let animate = useRef(null)
+        let animation = ()=>{
+            
+            animate.current.style.display = 'flex'
+            animate.current.style.opacity = 1
+            setTimeout(()=>{
+                animate.current.style.opacity = 0
+            }, 2000)
+            setTimeout(()=>{
+                animate.current.style.display = 'none'
+            }, 4000)
+        }
+
     return(
         <div className='grid gap-5 grid-cols-2 sm:flex sm:flex-col sm:w-55 hover:scale-97 ease-in-out duration-600 '>
-            <Link to={'/item'} onClick={()=>localStorage.setItem('variantsPage', JSON.stringify(Details))}>
-            <div className="h-40">
-            <img src={Details.images[0].url} alt="" className='h-full mx-auto' />
-            </div>
-            <div className='h-15'>
-                <h3 className="font-bold h-12 overflow-auto">{Details.title}</h3>
+            <Link className='row-span-2' to={'/item'} onClick={()=>localStorage.setItem('variantsPage', JSON.stringify(Details))}>
+            <img src={Details.images[0].url} alt="" className='h-full sm:h-45 mx-auto' />
+            </Link>
+            <Link className='h-20 sm:h-15 ' to={'/item'} onClick={()=>localStorage.setItem('variantsPage', JSON.stringify(Details))}>
+                <h3 className="font-bold max-h-20 overflow-auto">{Details.title}</h3>
                 <div className="details text-gray-600">
                     <span>{price}-XAF • ★ {ratings.stars} ({ratings.count})</span>
                 </div>
-            </div>
             </Link>
             <div className='col-start-2'>
-                <BigBlue content='Add To Cart' onclick={()=> addToCart(Details.variants[0].id, Number(itemQuantity))}/>
+                <p ref={animate}  className='text-green-500 hidden transition-opacity duration-2000 shadow-2xl  w-fit p-2 relative'>Added {itemQuantity} to cart !</p>
+                <BigBlue content='Add To Cart' onclick={()=>{animation(), addToCart(Details.variants[0].id, Number(itemQuantity))}}/>
             </div>
         </div>
     )

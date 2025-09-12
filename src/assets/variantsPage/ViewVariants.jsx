@@ -1,7 +1,7 @@
 import { sdk } from '../../lib/config'
 import BigBlue from '../bigBlue'
 import sample from '../images/trash.jpeg'
-import {useContext, useEffect, useState } from 'react'
+import {useContext, useEffect, useRef, useState } from 'react'
 import { AppContext } from '../../AppContext'
 
 
@@ -41,9 +41,21 @@ function Variants(){
         })
     }
 
-
+    let animate = useRef(null)
+    let animation = ()=>{
+        
+        animate.current.style.display = 'flex'
+        animate.current.style.opacity = 1
+        setTimeout(()=>{
+            animate.current.style.opacity = 0
+        }, 2000)
+        setTimeout(()=>{
+            animate.current.style.display = 'none'
+        }, 4000)
+    }
+    
     return(
-        <section className="mx-1 h-80  sm:mx-10 lg:mx-50 gap-2 grid sm:grid-cols-3">
+        <section className="mx-1 min-h-100 sm:m-h-dvh  sm:mx-10 lg:mx-50 gap-2 grid sm:grid-cols-3">
             <div className="flex flex-col gap-4 sm:gap-8">
                 <div className="group border-t border-b flex flex-col text-xl justify-center items-center-safe ">
                     <p className="font-bold text-blue-800  sm:text-2xl">{variantItem.title}</p>
@@ -64,14 +76,15 @@ function Variants(){
                     </div>
                 </div>
             </div>
-            <div className='grid overflow-y-scroll h-full'>
+            <div className='flex overflow-x-scroll  overflow-y-hidden whitespace-nowrap
+             space-x-4 w-full sm:grid sm:scrollbar-hide sm:overflow-y-scroll h-50 sm:h-70'>
                 {variantItem.images.map((image, idx)=>
                 <div key={idx}>
-                    <img src={variantItem.images[idx].url} alt=""  className=''/>
+                    <img src={image.url} alt=""  className='w-50 sm:w-full'/>
                 </div>
                 )}
             </div>
-            <div className='flex flex-col justify-center gap-3'>
+            <div className='flex flex-col  gap-3'>
                 
                 <div className="group border-b grid text-xl gap-1">
                     <p className='text-blue-800 font-bold'>Select Variant</p>
@@ -89,6 +102,7 @@ function Variants(){
                     </div>
                 </div >
                 <div className='grid sm:grid-cols-2 gap-2'>
+                    <p ref={animate}  className='text-green-500 hidden transition-opacity duration-2000 shadow-2xl  w-fit p-2 relative'>Added {itemQuantity} to cart !</p>
                     <div className='flex w-fit  bg-gray-400/45 rounded-2xl  p-1 px-2'>
                             <p className='w-fit'>Quantity</p>
                             <select value={itemQuantity} onChange={(e)=> setQuantity(q=> q = e.target.value)} name="productQuantity" id="selectQuantity" className='w-fit hover:scale-95 cursor-pointer'>
@@ -114,7 +128,7 @@ function Variants(){
                                 <option value={20}>20</option>
                             </select>
                         </div>
-                    <BigBlue content='Add to Cart' onclick={()=> addToCart(selected, Number(itemQuantity))}/>
+                    <BigBlue content='Add to Cart' onclick={()=>{ addToCart(selected, Number(itemQuantity)), animation()}}/>
                 </div>
             </div>
         </section>
