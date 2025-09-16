@@ -22,7 +22,7 @@ function Header(){
     }, [])
 
     return (
-        <header className="bg-white h-12 items-center-safe left-side sticky z-10 top-0 border-1 flex w-full justify-between mb-2 px-2">
+        <header className="bg-white h-12 items-center-safe left-side sticky z-10 top-0 border-1 flex w-full justify-between mb-0 px-2">
             <div className="left-side border-0.5 flex my-auto gap-10 h-9 items-center-safe">
                 <img src={Logo} alt="" className='h-full'/>
 

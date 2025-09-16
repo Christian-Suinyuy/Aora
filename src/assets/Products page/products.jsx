@@ -6,13 +6,12 @@ import { useContext, useEffect, useState } from "react"
 import { sdk } from "../../lib/config"
 import { AppContext } from "../../AppContext"
 import SearchBar from "../Seach-bar/Search"
+import { ProductsError } from "../../error"
 
 function Aside(){
+    const [a,b,c,d,e,categories, swapList,products]= useContext(AppContext)
+    let [selected,setSelected] = useState('')
 
-    const filters = ()=>{
-        let category = []
-        let price = []
-    }
 
     return (
         <div className="filter h-fit sm:sticky top-10">
@@ -20,11 +19,19 @@ function Aside(){
                 <form className=" grid gap-5">
                     <label htmlFor="category" className="flex flex-col gap-2">
                         <p className="font-bold">Category</p>
-                        <select id="category" className="w-full border-1 p-2 rounded">
-                            <option value="clothing">Select category</option>
-                            <option value="clothing">Clothing</option>
-                            <option value="Electronics">Electronics</option>
-                            <option value="Pc">Comuters</option>
+                        <select onChange={(e)=>{
+                                setSelected(c=>{
+                                     c=e.target.value
+                                     swapList(c=== 'all'?products: categories[c].products)
+                                     return(c)
+                                    })
+                                }}
+                         id="category" className="w-full border-1 p-2 rounded">
+                            <option value= 'all' >Select category (All)</option>
+                            {categories.map((category, idx)=>
+                            <option key={idx} value={idx}>{category.cat}</option>
+                            )}
+
                         </select>
                     </label>
 
@@ -36,7 +43,7 @@ function Aside(){
                         </div>
                     </label>
                     
-                <label htmlFor="category" className="flex flex-col gap-2">
+                {/* <label htmlFor="category" className="flex flex-col gap-2">
                         <p className="font-bold">Brand</p>
                         <select id="category" className="w-full border-1 p-2 rounded">
                             <option value="clothing">Select category</option>
@@ -44,7 +51,7 @@ function Aside(){
                             <option value="Electronics">Electronics</option>
                             <option value="Pc">Comuters</option>
                         </select>
-                    </label>
+                    </label> */}
                 </form>
 
         </div>
@@ -61,7 +68,7 @@ function Grid(){
             <h1 className="font-bold text-xl">Featured Products</h1>
             <div className="product-grid gap-10 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
                 {finalList[0] ? finalList.map((item,idx)=> <Card key={idx} Details={item} image={`../${item.image}`} productName={item.name}
-                 price={item.priceCents} ratings={item.rating} id={item.id} />) : <p className="text-center">opps we encountered an error fetching data from store try refreshing your page</p>
+                 price={item.priceCents} ratings={item.rating} id={item.id} />) : <ProductsError />
                 }
             </div>
         </section>

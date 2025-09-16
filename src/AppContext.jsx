@@ -12,18 +12,16 @@ export const AppContext = createContext();
 
 const ContextProvider = (props)=>{
     const cartId = localStorage.getItem('cart_id')
-
+    // makes sure cart exits
     cartId ? sdk.store.cart.retrieve(cartId)
             .then(({ cart }) => {
             // use cart...
             //   console.log(cart)
-            //   console.log(cart.)
         }) : sdk.store.cart.create({
             region_id: "reg_01K3R2YFBHV9H3JWK99NWWXE0V",
             })
             .then(({ cart }) => {
             localStorage.setItem("cart_id", cart.id)
-                // console.log(cart)
         })
         
     let [quantity, setQuantity] = useState(0)
@@ -39,6 +37,8 @@ const ContextProvider = (props)=>{
     let [collections, setCollections] = useState([])
     /* used to store all collections available when retrieved */
     let collectionObj
+    /*stores categories */
+    let [categories, setcategories] = useState([])
 
     /*fetch products from backend */
         useEffect(()=>{
@@ -52,7 +52,7 @@ const ContextProvider = (props)=>{
             fetchProducts()
 
             /* fetch for home page */
-            const fetCategories = async ()=>{
+            const fetchCollections = async ()=>{
                 collectionObj = await sdk.store.collection.list()
                 
                 let objects = collectionObj.collections.map(async(collection)=>
@@ -64,8 +64,20 @@ const ContextProvider = (props)=>{
             })
         }
         
-        fetCategories()
-    },[])
+        fetchCollections()
+
+        const fetchCategories = async()=>{
+           let category = await sdk.store.category.list().then(({product_categories})=>product_categories )
+           let products = category.map(async(c,idx)=>await sdk.store.product.list({category_id:c.id})
+           .then(value=>{
+               setcategories(g=> g=[...g,{cat:c.name, products:value.products}] )
+            })
+        )
+    }
+    fetchCategories()
+},[])
+
+
 
     const updateQuantity = ()=>{
         cartId && sdk.store.cart.retrieve(cartId)
@@ -77,7 +89,11 @@ const ContextProvider = (props)=>{
                 setQuantity(q=> q = accumulator)
         })
     }
-
+    
+    function swapList(New){
+        setFinalList(f=> f= New)
+    }
+ 
     
         const search =(e)=>{
         let result = products.filter((product,idx)=> {
@@ -88,11 +104,11 @@ const ContextProvider = (props)=>{
         setFinalList(f => result[0] ? result :products )
 
       }
-      console.log(finalList)
+
     updateQuantity()
     
     return (
-        <AppContext.Provider value={[quantity,updateQuantity,collections,finalList,search]}>
+        <AppContext.Provider value={[quantity,updateQuantity,collections,finalList,search,categories, swapList,products]}>
             {props.children}
         </AppContext.Provider>
     )

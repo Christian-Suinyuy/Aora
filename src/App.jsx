@@ -17,9 +17,9 @@ export let user = sessionStorage.getItem('userx')
 
 function App() {
   return (
-    <section className='grid h-dvh flex-col gap-2'>
+    <section className='grid h-dvh flex-col gap-2 font-sans'>
       <Header />
-      <div className='mx-4'>
+      <div className='mx-0'>
         <Routes>
         <Route path='/' element= {<Home />} />
         <Route path='/products' element= {<Products />} />
