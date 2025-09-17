@@ -1,4 +1,6 @@
+/// <reference types="vite/client" />
 import Medusa from "@medusajs/js-sdk"
+
 
 let MEDUSA_BACKEND_URL = "http://localhost:9000"
 if (import.meta.env.VITE_MEDUSA_BACKEND_URL) {
