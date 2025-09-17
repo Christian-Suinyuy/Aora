@@ -12,11 +12,10 @@ function Variants(){
     let [selected, setSelected] = useState(variantItem.variants[0].id)
     let [itemQuantity, setQuantity] = useState(1)
     const cartId = localStorage.getItem('cart_id')
-    console.log(cartId)
     useEffect(()=>{
         sdk.store.product.retrieve(variantItem.id, {
         fields: `*variants.calculated_price`,
-        region_id: "reg_01K3R2YFBHV9H3JWK99NWWXE0V",
+        region_id: "reg_01K5CS3Y8E61H68KNHWKKDRAPY",
         country_code: 'cm',
         }).then(({ product }) => {
             // console.log(product)

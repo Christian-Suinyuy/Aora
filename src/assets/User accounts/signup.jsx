@@ -52,7 +52,7 @@ function SignUp(){
                 },
     
                 {},
-                { Authorization: `Bearer ${token }`, "x-publishable-api-key": 'pk_823ac7a7bddffea59945a5f89810d7bcc236fcefef8c92d5385d135b4c1e9c75' }
+                { Authorization: `Bearer ${token }`, "x-publishable-api-key": 'pk_7a48b77290936958c869c1de07564ca981c4043f0eec1834b0a12c767bf21626' }
     
                 ).then(()=>{
                     alert('succesfull')

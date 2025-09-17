@@ -11,18 +11,28 @@ export const AppContext = createContext();
 // }
 
 const ContextProvider = (props)=>{
+    /* retrives all regions */
+    // let returive= async()=>{
+    //     sdk.store.region.list()
+    //         .then(({ regions, count, limit, offset }) => {
+    //         console.log(regions)
+    //     })
+    // }
+    // returive()
     const cartId = localStorage.getItem('cart_id')
     // makes sure cart exits
+
     cartId ? sdk.store.cart.retrieve(cartId)
             .then(({ cart }) => {
-            // use cart...
-            //   console.log(cart)
-        }) : sdk.store.cart.create({
-            region_id: "reg_01K3R2YFBHV9H3JWK99NWWXE0V",
+  
+        }) :sdk.store.cart.create({
+            region_id: "reg_01K5CS3Y8E61H68KNHWKKDRAPY",
             })
             .then(({ cart }) => {
             localStorage.setItem("cart_id", cart.id)
         })
+
+
         
     let [quantity, setQuantity] = useState(0)
     /*stored a filtered or non filtered list inal list to be rendered */

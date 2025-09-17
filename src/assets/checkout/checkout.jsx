@@ -25,7 +25,7 @@ function Form(){
 
         // /*adding shipping method */
         sdk.store.cart.addShippingMethod(cartId, {
-            option_id: "so_01K3X202RPRWXF3BCZJCERRAZJ", // The ID of the selected shipping option
+            option_id: "so_01K5CW2WZW0ZPKWRAYY5QFB26T", // The ID of the selected shipping option
             data: {
                 // Any custom data required by the fulfillment provider
             }
@@ -35,7 +35,7 @@ function Form(){
 
 
         /*getiing shipping options */
-        // sdk.store.fulfillment.listCartOptions({cart_id:'cart_01K3VHDWQSKD064WJ64XXCQEK5'})
+        // sdk.store.fulfillment.listCartOptions({cart_id:cartId})
         //     .then(({shipping_options})=>{
         //         console.log(shipping_options)
         //     })

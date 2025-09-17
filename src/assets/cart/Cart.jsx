@@ -4,10 +4,11 @@ import { useState, useEffect, useContext } from 'react'
 import { sdk } from '../../lib/config'
 import trash from '../images/trash.jpeg'
 import { AppContext } from '../../AppContext'
+import { useNavigate } from 'react-router-dom'
 
 
 function CartItem({details = product}){
-
+    let navigate = useNavigate()
     const [quantity, updateQuantity ]= useContext(AppContext)
 
     const cartId = localStorage.getItem('cart_id')
@@ -28,7 +29,7 @@ function CartItem({details = product}){
         sdk.store.cart.deleteLineItem(cartId,var_id)
             .then(({parent: cart})=>{
                 updateQuantity()
-        
+                navigate('/cart')
             })
     }
 

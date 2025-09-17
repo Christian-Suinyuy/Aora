@@ -14,7 +14,7 @@ function Card({ Details = [], ratings = {stars:4.3,count: 90 }}){
     /*retrieving product and variant prices */
     sdk.store.product.retrieve(Details.id, {
         fields: `*variants.calculated_price`,
-        region_id: "reg_01K3R2YFBHV9H3JWK99NWWXE0V",
+        region_id: 'reg_01K5CS3Y8E61H68KNHWKKDRAPY',
         country_code: 'cm',
         }).then(({ product }) => {
             setPrice(product.variants[0].calculated_price.calculated_amount)
@@ -59,7 +59,7 @@ function Card({ Details = [], ratings = {stars:4.3,count: 90 }}){
     return(
         <div className='grid gap-5 grid-cols-2 sm:flex sm:flex-col sm:w-55 hover:scale-97 ease-in-out duration-600 '>
             <Link className='row-span-2' to={'/item'} onClick={()=>localStorage.setItem('variantsPage', JSON.stringify(Details))}>
-            <img src={Details.images[0].url} alt="" className='h-full sm:h-45 mx-auto' />
+            <img src={Details.images[0].url} alt="" loading='lazy' className='h-full sm:h-45 mx-auto' />
             </Link>
             <Link className='h-20 sm:h-15 ' to={'/item'} onClick={()=>localStorage.setItem('variantsPage', JSON.stringify(Details))}>
                 <h3 className="font-bold max-h-20 overflow-auto">{Details.title}</h3>

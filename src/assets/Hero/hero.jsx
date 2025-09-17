@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 function Hero(){
     return(
         <section className="hero text-white items-center-safe grid  sm:grid-cols-[1fr_1fr] justify-around gap-4 px-10 bg-purple-600/100 bg-blend-darken h-dvh">
-            <div className="">
+            <div className="hidden sm:block">
                 <img src={sample1} alt="" />
             </div>
             <div className="row-start-1 sm:col-start-2 grid gap-20">
