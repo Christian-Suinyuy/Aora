@@ -19,7 +19,6 @@ function Form(){
 
      
     // Navigate('/products')
-
     let cartId = localStorage.getItem('cart_id')
     // console.log(cartId)
 
@@ -69,7 +68,7 @@ function Form(){
 
     return(
         <>
-        <form action="#" ref={formElem} className=" grid gap-2.5 h-auto w-100">
+        <form action="#" ref={formElem} className=" grid gap-2.5 h-auto max-w-100">
 
             <h2 className="shipping-info font-bold text-black">Payment Method: {payment}</h2>
 
@@ -157,7 +156,8 @@ function Summary(){
 
 function Checkout(){
     return (
-        <section className="grid mb-5 gap-5 h-auto text-blue-900 sm:mx-50">
+        <section className="grid  mb-5 gap-5 h-auto text-blue-900 md:mx-50">
+
             <h2 className="font-bold text-2xl text-black">Checkout</h2>
             <Form />
             

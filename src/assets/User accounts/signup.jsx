@@ -54,14 +54,17 @@ function SignUp(){
                 {},
                 { Authorization: `Bearer ${token }`, "x-publishable-api-key": 'pk_823ac7a7bddffea59945a5f89810d7bcc236fcefef8c92d5385d135b4c1e9c75' }
     
-                )
+                ).then(()=>{
+                    alert('succesfull')
+                })
                 
                 // register -> create
 
 
                 } catch (e) {
                 // inspect e.status, e.statusText, e.message
-                console.log(e.message, 'damn')
+                alert(`${e.message}`)
+                // console.log(e.message, 'damn')
 
             }
             
