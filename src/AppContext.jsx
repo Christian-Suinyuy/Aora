@@ -44,7 +44,7 @@ const ContextProvider = (props)=>{
             shippingOption(cartId)
             //   console.log(cart)
         }) : sdk.store.cart.create({
-            region_id: region.id,
+            region_id: region?.id,
             })
             .then(({ cart }) => {
                 shippingOption(cart.id)
