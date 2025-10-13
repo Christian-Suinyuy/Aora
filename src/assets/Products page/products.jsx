@@ -35,13 +35,13 @@ function Aside(){
                         </select>
                     </label>
 
-                    <label htmlFor="price range" className="flex flex-col gap-2">
+                    {/* <label htmlFor="price range" className="flex flex-col gap-2">
                         <p className="font-bold">Price Range</p>
                         <div className="flex gap-4">
                         <div className="flex gap-2"> <p>min</p> <input type="number" className=" border-1 rounded p-1 w-15"/></div>
                         <div className="flex gap-2"> <p>min</p> <input type="number" className=" border-1 rounded p-1 w-15"/></div>
                         </div>
-                    </label>
+                    </label> */}
                     
                 {/* <label htmlFor="category" className="flex flex-col gap-2">
                         <p className="font-bold">Brand</p>
