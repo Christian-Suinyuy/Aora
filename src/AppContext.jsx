@@ -10,17 +10,44 @@ export const AppContext = createContext();
 //   // redirect to login
 // }
 
+
+/*getiing shipping options */
+
 const ContextProvider = (props)=>{
+    //getRegions
+    const [region, setRegion] = useState()
+
+    useEffect(()=>{
+
+        sdk.store.region.list().then(({ regions }) => {
+            setRegion(r=> r= regions[0])
+           })
+
+    }, [])
+        
+
+    //bring out shipping method
+    const [shippingID, setShipping] = useState(undefined)
+    function shippingOption(cart_id){
+        sdk.store.fulfillment.listCartOptions({cart_id})
+            .then(({shipping_options})=>{
+                setShipping(s=> s=shipping_options[0].id)
+                // console.log(shippingID)
+            })
+    }
+
     const cartId = localStorage.getItem('cart_id')
     // makes sure cart exits
     cartId ? sdk.store.cart.retrieve(cartId)
             .then(({ cart }) => {
             // use cart...
+            shippingOption(cartId)
             //   console.log(cart)
         }) : sdk.store.cart.create({
-            region_id: "reg_01K3R2YFBHV9H3JWK99NWWXE0V",
+            region_id: region.id,
             })
             .then(({ cart }) => {
+                shippingOption(cart.id)
             localStorage.setItem("cart_id", cart.id)
         })
         
@@ -106,9 +133,9 @@ const ContextProvider = (props)=>{
       }
 
     updateQuantity()
-    
     return (
-        <AppContext.Provider value={[quantity,updateQuantity,collections,finalList,search,categories, swapList,products]}>
+        <AppContext.Provider value={{quantity,updateQuantity,collections,finalList,search,
+        categories, swapList,products,shippingID, region}}>
             {props.children}
         </AppContext.Provider>
     )

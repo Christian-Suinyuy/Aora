@@ -8,7 +8,7 @@ import { AppContext } from '../../AppContext'
 
 function CartItem({details = product}){
 
-    const [quantity, updateQuantity ]= useContext(AppContext)
+    const {quantity, updateQuantity }= useContext(AppContext)
 
     const cartId = localStorage.getItem('cart_id')
     let [itemQuantity, setQuantity] = useState(details ? details.quantity : 0)
@@ -129,22 +129,14 @@ function Summary({details}){
 function Cart(){
     let [actualCart,setActualCart]= useState()
     const cartId = localStorage.getItem('cart_id')
-    const [quantity, setQuantity]= useState(cartme.calculatQuantity())
-        useEffect(()=>{
-            const unsubscribe = cartme.subscibe(()=>{
-                setQuantity(cartme.calculatQuantity())
-            })
     
-            setQuantity(cartme.calculatQuantity())
-             // /*retrive cart */
-
+        useEffect(()=>{
         sdk.store.cart.retrieve(cartId)
             .then(({ cart }) => {
             // use cart...
                setActualCart(c => c = cart)
         })
     
-            return ()=> unsubscribe()
             
 
         }, [])

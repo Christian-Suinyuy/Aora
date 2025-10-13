@@ -1,7 +1,8 @@
 import BigBlue from "../bigBlue"
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { sdk } from "../../lib/config"
 import { Navigate, useNavigate } from "react-router-dom"
+import { AppContext } from "../../AppContext"
 
 function Form(){
     let navigate = useNavigate()
@@ -22,10 +23,11 @@ function Form(){
     let cartId = localStorage.getItem('cart_id')
     // console.log(cartId)
 
+    const {shippingID} = useContext(AppContext)
 
         // /*adding shipping method */
         sdk.store.cart.addShippingMethod(cartId, {
-            option_id: "so_01K3X202RPRWXF3BCZJCERRAZJ", // The ID of the selected shipping option
+            option_id: shippingID, // The ID of the selected shipping option
             data: {
                 // Any custom data required by the fulfillment provider
             }

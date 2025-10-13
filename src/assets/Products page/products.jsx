@@ -9,7 +9,7 @@ import SearchBar from "../Seach-bar/Search"
 import { ProductsError } from "../../error"
 
 function Aside(){
-    const [a,b,c,d,e,categories, swapList,products]= useContext(AppContext)
+    const {categories, swapList,products}= useContext(AppContext)
     let [selected,setSelected] = useState('')
 
 
@@ -60,7 +60,7 @@ function Aside(){
 
 function Grid(){
 
-    const [a,b,c,finalList] = useContext(AppContext)
+    const {finalList} = useContext(AppContext)
        
     return(
         <section className="product-main">

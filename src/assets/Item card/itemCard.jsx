@@ -7,14 +7,15 @@ import { AppContext } from '../../AppContext'
 
 function Card({ Details = [], ratings = {stars:4.3,count: 90 }}){
     let cartId = localStorage.getItem('cart_id')
-    const [quantity, updateQuantity ]= useContext(AppContext)
+    const {updateQuantity, region }= useContext(AppContext)
     let [price,setPrice] = useState(0)
      let [itemQuantity, setQuantity] = useState(1)
 
     /*retrieving product and variant prices */
+    if(region){
     sdk.store.product.retrieve(Details.id, {
         fields: `*variants.calculated_price`,
-        region_id: "reg_01K3R2YFBHV9H3JWK99NWWXE0V",
+        region_id: region.id,
         country_code: 'cm',
         }).then(({ product }) => {
             setPrice(product.variants[0].calculated_price.calculated_amount)
@@ -22,20 +23,8 @@ function Card({ Details = [], ratings = {stars:4.3,count: 90 }}){
             // Check calculated_price.price_list_type === "sale" for sale price
             // Use calculated_price.calculated_amount for the price
             // Use calculated_price.original_amount for the original price (if on sale)
-    })
+    })}
 
-        const addToCart = (variant_id, quantity = 1)=>{
-        updateQuantity()
-        if(!cartId){
-            alert("could not add to cart")
-            return
-        }
-        
-        sdk.store.cart.createLineItem(cartId, {
-            variant_id,
-            quantity,
-        })
-    }
 
 
     // sdk.store.region.retrieve("reg_01K3R2YFBHV9H3JWK99NWWXE0V").then(({ region }) => {
@@ -69,7 +58,7 @@ function Card({ Details = [], ratings = {stars:4.3,count: 90 }}){
             </Link>
             <div className='col-start-2'>
                 <p ref={animate}  className='text-green-500 hidden transition-opacity duration-2000 shadow-2xl  w-fit p-2 relative'>Added {itemQuantity} to cart !</p>
-                <BigBlue content='Add To Cart' onclick={()=>{animation(), addToCart(Details.variants[0].id, Number(itemQuantity))}}/>
+                <BigBlue content='BUY' rout='/item'/>
             </div>
         </div>
     )

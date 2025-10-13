@@ -6,17 +6,18 @@ import { AppContext } from '../../AppContext'
 
 
 function Variants(){
-    const [quantity, updateQuantity ]= useContext(AppContext)
-    let [item, setItem] = useState(0)
+    const {updateQuantity, region }= useContext(AppContext)
     let [variantItem,setVariant] =useState(JSON.parse(localStorage.getItem('variantsPage')) || {})
     let [selected, setSelected] = useState(variantItem.variants[0].id)
     let [itemQuantity, setQuantity] = useState(1)
     const cartId = localStorage.getItem('cart_id')
     console.log(cartId)
+    
     useEffect(()=>{
+        if(region){
         sdk.store.product.retrieve(variantItem.id, {
         fields: `*variants.calculated_price`,
-        region_id: "reg_01K3R2YFBHV9H3JWK99NWWXE0V",
+        region_id: region?.id,
         country_code: 'cm',
         }).then(({ product }) => {
             // console.log(product)
@@ -25,7 +26,7 @@ function Variants(){
             // Check calculated_price.price_list_type === "sale" for sale price
             // Use calculated_price.calculated_amount for the price
             // Use calculated_price.original_amount for the original price (if on sale)
-    })
+    })}
     }, [])
 
         const addToCart = (variant_id, quantity = 1)=>{

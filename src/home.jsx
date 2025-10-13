@@ -8,7 +8,7 @@ import { ProductsError } from './error'
 import Hero from './assets/Hero/hero'
 
 function Home(){
-  let [q,sq,collections] = useContext(AppContext)
+  let {collections} = useContext(AppContext)
   
   return (
     <main className='min-h-dvh'>

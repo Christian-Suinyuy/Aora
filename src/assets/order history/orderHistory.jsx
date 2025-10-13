@@ -4,12 +4,36 @@ import BigBlue from '../bigBlue'
 import { useState } from 'react'
 
 function Order({order}){
+    const [status, setStatus]= useState()
+
+    useEffect(()=>{
+        const ToggleStatus = ()=>{
+            switch(order.fulfillment_status){
+                case "delivered":
+                    setStatus(s=> s = "delivered")
+                    return "delivered";
+                case "not_fulfilled":
+                    setStatus(s=> s = "Awaiting Fulfillment")
+                    return "Awaiting fulfillment"
+                case "fulfilled":
+                    setStatus("Awaiting shipping")
+                    break
+                case "shipped":
+                    setStatus("Shipped")
+                    break
+            }}
+
+            ToggleStatus()
+    })
     return <section className='border-1 p-2 rounded border-purple-400'>
         <div className="topbar relative">
             <h1>order Id: {order.id}</h1>
             <h1>order Total:{order.total} </h1>
-            <p className={`w-30 absolute top-2 right-3 ${order ?"bg-purple-400": "bg-green-400"}`}>
-            {order.status === "pending" ? 'On the way ...' : "Delivered" }</p>
+            <p className={`px-2 w-fit absolute top-2 right-3 ${order.fulfillment_status !="delivered" ?"bg-purple-400": "bg-blue-200"}`}>
+                {
+                    status
+                }
+            </p>
         </div>
     <hr></hr>
         <div className='flex flex-wrap gap-20'>

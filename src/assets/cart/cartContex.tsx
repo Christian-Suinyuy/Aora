@@ -29,7 +29,6 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     HttpTypes.StoreCart
   >()
   const { region } = useRegion()
-
   useEffect(() => {
     if (cart || !region) {
       return

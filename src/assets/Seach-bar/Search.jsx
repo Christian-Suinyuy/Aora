@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import SearcIcon from '../images/search-icon.svg'
 import { AppContext } from '../../AppContext'
 function SearchBar(){
-    const [a,b,c,d,search] = useContext(AppContext)
+    const {search} = useContext(AppContext)
     return(
         <div className="flex sticky z-1 top-12 search-container w-full border-0 rounded-2xl bg-blue-900/50 mx-auto h-9 px-1 gap-3 py-2">
             <img src={SearcIcon} alt="icon" />

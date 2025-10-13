@@ -5,10 +5,11 @@ import { cart } from '../cart/cartData'
 import { Link } from 'react-router-dom'
 import { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../AppContext'
+import { sdk } from '../../lib/config'
 
 function Header(){
-
-    const [quantity, updateQuantity ]= useContext(AppContext)
+    const user = sessionStorage.getItem("userx")
+    const {quantity, updateQuantity }= useContext(AppContext)
 
     const [quantityOld, setQuantity]= useState(cart.calculatQuantity())
     useEffect(()=>{
@@ -21,14 +22,20 @@ function Header(){
         return ()=> unsubscribe()
     }, [])
 
+    const [open, setOpen] =useState(false)
+    const signOut = ()=>{
+       sdk.auth.logout()
+       console.log(sessionStorage.removeItem('userx'))
+    }
+    
     return (
         <header className="bg-white h-12 items-center-safe left-side sticky z-10 top-0 border-1 flex w-full justify-between mb-0 px-2">
             <div className="left-side border-0.5 flex my-auto gap-10 h-9 items-center-safe">
                 <img src={Logo} alt="" className='h-full'/>
-
-                <div className='group my-2 sm:my-auto mx-auto hover:cursor-pointer sm:flex '>
-                    <p className='sm:hidden'>Pages</p>
-                <ul className='relative z-1 p-2 scale-y-0 sm:shadow-none shadow-xl group-hover:scale-y-100 sm:scale-y-100 sm:flex sm:gap-5'>
+                <div className='flex sm:hidden'>
+                    <MobileDropDown />
+                </div>
+                <ul className=' hidden sm:flex sm:gap-5'>
                     <Link to='/' className='hover:scale-110 ease-in-out'>
                         <li className=''>Home</li>
                     </Link>
@@ -43,17 +50,23 @@ function Header(){
                     </Link>
                     
                 </ul>
-                </div>
             </div>
 
             <div className ="right-side  items-center-safe flex gap-3">
-                <Link to='/signup' className='hover:scale-110 ease-in-out'>
-                        <span className=''>signUp</span>
-                </Link>
+                <div className={`${user ? "flex" : "hidden"}`} onClick={()=> setOpen(o => !o)}>
+                    <img src="/user.svg" alt="" className='h-8' />
 
-                <Link to='/login' className='hover:scale-110 ease-in-out'>
+                    <div 
+                    onClick={signOut}
+                    className={`${open ? 'fixed' : "hidden" } hover:scale-105 rounded  bg-slate-300 p-3`}>
+                        <p >signOut</p>
+                    </div>
+                </div>
+
+                <Link to='/login' className={`${user ?"hidden":"flex" } hover:scale-110 ease-in-out`}>
                         <span className=''>Login</span>
                 </Link >
+
                 <img src={Like} alt= "like" className='hover:scale-110 ease-in-out' />
                 <Link to="/cart" className='hover:scale-110 ease-in-out'>
                 <div>
@@ -65,6 +78,40 @@ function Header(){
                 </Link>
             </div>
         </header>
+    )
+}
+
+function MobileDropDown(){
+    let [open, setOpen] = useState(false)
+
+    return(
+        <div id="dropdown" className="flex flex-col">
+            <div className="stuff" onClick={()=>setOpen(o=> !o)}>
+                <p>Pages</p>
+            </div>
+
+            <div id="dropContent" className={`${open ? "scale-100" : "scale-0"} absolute bg-slate-200
+            transition-all duration-1000 left-0 w-full top-10 `}>
+                  <ul className=' p-5 flex flex-col gap-5 rounded' onClick={()=>setOpen(o=> !o)}>
+                    <Link to='/' className='hover:scale-110 ease-in-out'>
+                        <li className=''>Home</li>
+                    <hr />
+                    </Link>
+                    <Link to='/products' className='hover:scale-110 ease-in-out'>
+                        <li className=''>Products</li>
+                    <hr />
+                    </Link>
+                    <Link to='/cart' className='hover:scale-110 ease-in-out'>
+                        <li className=''>Carts</li>
+                    <hr />
+                    </Link>
+                    <Link to='/history' className='hover:scale-110 ease-in-out'>
+                        <li className=''>History</li>
+                    </Link>
+                    
+                </ul>
+            </div>
+        </div>
     )
 }
 
